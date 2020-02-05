@@ -55,14 +55,13 @@ namespace ProsisMTTO.Migrations
                     Lane = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: false),
                     LaneType = table.Column<int>(type: "int", maxLength: 15, nullable: false),
                     SquaresCatalogId = table.Column<int>(type: "int", nullable: false),
-                    SquaresCatalogSquareNum = table.Column<string>(type: "nvarchar(10)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PrimaryKey_CapufeLaneNum", x => x.CapufeLaneNum);
                     table.ForeignKey(
-                        name: "FK_LanesCatalogs_SquaresCatalogs_SquaresCatalogSquareNum",
-                        column: x => x.SquaresCatalogSquareNum,
+                        name: "FK_LanesCatalogs_SquaresCatalogs_SquaresCatalogId",
+                        column: x => x.SquaresCatalogId,
                         principalTable: "SquaresCatalogs",
                         principalColumn: "SquareNum",
                         onDelete: ReferentialAction.Cascade);
@@ -181,9 +180,9 @@ namespace ProsisMTTO.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_LanesCatalogs_SquaresCatalogSquareNum",
+                name: "IX_LanesCatalogs_SquaresCatalogId",
                 table: "LanesCatalogs",
-                column: "SquaresCatalogSquareNum");
+                column: "SquaresCatalogId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SparePartsCatalogs_DTCTechnicalReferenceNum",

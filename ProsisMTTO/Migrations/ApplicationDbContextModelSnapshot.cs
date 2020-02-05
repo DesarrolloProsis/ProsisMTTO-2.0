@@ -154,17 +154,14 @@ namespace ProsisMTTO.Migrations
                         .HasColumnType("int")
                         .HasMaxLength(15);
 
-                    b.Property<int>("SquaresCatalogId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("SquaresCatalogSquareNum")
+                    b.Property<string>("SquaresCatalogId")
                         .IsRequired()
                         .HasColumnType("nvarchar(10)");
 
                     b.HasKey("CapufeLaneNum")
                         .HasName("PrimaryKey_CapufeLaneNum");
 
-                    b.HasIndex("SquaresCatalogSquareNum");
+                    b.HasIndex("SquaresCatalogId");
 
                     b.ToTable("LanesCatalogs");
                 });
@@ -292,7 +289,7 @@ namespace ProsisMTTO.Migrations
                 {
                     b.HasOne("ProsisMTTO.Entities.SquaresCatalog", null)
                         .WithMany("LanesCatalogs")
-                        .HasForeignKey("SquaresCatalogSquareNum")
+                        .HasForeignKey("SquaresCatalogId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

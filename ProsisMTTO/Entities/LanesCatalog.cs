@@ -13,7 +13,7 @@ namespace ProsisMTTO.Entities
         public string CapufeLaneNum { get; set; }
         public string Lane { get; set; }
         public int LaneType { get; set; }
-        public int SquaresCatalogId { get; set; }
+        public string SquaresCatalogId { get; set; }
 
         public DTCTechnical DTCTechnical { get; set; }
     }

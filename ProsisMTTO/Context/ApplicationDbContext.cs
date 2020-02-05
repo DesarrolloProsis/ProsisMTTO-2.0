@@ -132,17 +132,14 @@ namespace ProsisMTTO.Context
                         .HasColumnType("int")
                         .HasMaxLength(15);
 
-                    db.Property<int>("SquaresCatalogId")
-                        .HasColumnType("int");
-
-                    db.Property<string>("SquaresCatalogSquareNum")
+                    db.Property<string>("SquaresCatalogId")
                         .IsRequired()
                         .HasColumnType("nvarchar(10)");
 
                     db.HasKey("CapufeLaneNum")
                         .HasName("PrimaryKey_CapufeLaneNum");
 
-                    db.HasIndex("SquaresCatalogSquareNum");
+                    db.HasIndex("SquaresCatalogId");
 
                     db.ToTable("LanesCatalogs");
                 });
