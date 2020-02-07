@@ -27,13 +27,13 @@ namespace ProsisMTTO
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddCors();
+            services.AddCors();
 
-            services.AddCors(options =>
-            {
-                options.AddPolicy("AllowAPIRequest", 
-                    builder => builder.WithOrigins("*").WithMethods("*").WithHeaders("*"));
-            });
+            //services.AddCors(options =>
+            //{
+            //    options.AddPolicy("AllowAPIRequest", 
+            //        builder => builder.WithOrigins("*").WithMethods("*").WithHeaders("*"));
+            //});
 
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddControllers();
@@ -47,8 +47,7 @@ namespace ProsisMTTO
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseCors();
-            //app.UseCors(builder => builder.WithOrigins("*").WithMethods("*").WithHeaders("*"));
+            //app.UseCors();
                                           //AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
 
             app.UseHttpsRedirection();
@@ -56,6 +55,8 @@ namespace ProsisMTTO
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseCors(builder => builder.WithOrigins("*").WithMethods("*").WithHeaders("*"));
 
             app.UseEndpoints(endpoints =>
             {

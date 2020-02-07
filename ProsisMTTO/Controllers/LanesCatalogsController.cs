@@ -31,7 +31,6 @@ namespace ProsisMTTO.Controllers
         }
 
         [HttpGet("{id}")]
-        [Route("api/LanesCatalogs/")]
         public async Task<ActionResult<LanesCatalog>> GetLanesCatalog(string id)
         {
             var lanesCatalog = await _context.LanesCatalogs.FindAsync(id);
@@ -47,7 +46,6 @@ namespace ProsisMTTO.Controllers
 
         // GET: api/LanesCatalogs/5
         [HttpGet("params/{param1}/{param2?}")]
-        [Route("api/LanesCatalogs/params")]
         public async Task<ActionResult<List<LanesCatalog>>> GetLanesCatalog(string param1, int? param2)
         {
             try
