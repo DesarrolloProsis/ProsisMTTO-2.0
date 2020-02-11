@@ -14,6 +14,7 @@ namespace ProsisMTTO.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("AllowAPIRequest")]
     public class LanesCatalogsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;

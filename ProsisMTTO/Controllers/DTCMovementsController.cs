@@ -12,6 +12,7 @@ namespace ProsisMTTO.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("AllowAPIRequest")]
     public class DTCMovementsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
