@@ -56,7 +56,22 @@ namespace ProsisMTTO
 
             app.UseAuthorization();
 
-            app.UseCors(builder => builder.WithOrigins("*").WithMethods("*").WithHeaders("*"));
+            //app.UseCors(builder => builder
+            //    .AllowAnyHeader()
+            //    .AllowAnyMethod()
+            //    .SetIsOriginAllowed((host) => true)
+            //    .AllowCredentials()
+            //    );
+
+            app.UseCors(builder => builder
+                .WithOrigins("*")
+                .WithMethods("*")
+                .WithHeaders("*")
+                
+                );
+                //.WithOrigins()
+                //.WithMethods("*")
+                //.WithHeaders("*"));
 
             app.UseEndpoints(endpoints =>
             {

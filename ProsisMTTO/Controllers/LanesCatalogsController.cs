@@ -162,7 +162,7 @@ namespace ProsisMTTO.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
-        public async Task<ActionResult<LanesCatalog>> PostLanesCatalog(LanesCatalog lanesCatalog)
+        public async Task<ActionResult<LanesCatalog>> PostLanesCatalog([FromBody] LanesCatalog lanesCatalog)
         {
             _context.LanesCatalogs.Add(lanesCatalog);
             try
@@ -173,7 +173,7 @@ namespace ProsisMTTO.Controllers
             {
                 if (LanesCatalogExists(lanesCatalog.CapufeLaneNum))
                 {
-                    return Conflict();
+                    return Content("Existe");
                 }
                 else
                 {
