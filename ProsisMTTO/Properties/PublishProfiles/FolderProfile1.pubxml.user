@@ -10,7 +10,7 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
   </PropertyGroup>
   <ItemGroup>
     <DestinationConnectionStrings Include="DefaultConnection">
-      <Value>Data Source=192.168.0.84%3bInitial Catalog=ProsisMTTO%3bUser Id=SA%3bPassword=CAPUFE%3bIntegrated Security=false%3b</Value>
+      <Value>Data Source=.%3bInitial Catalog=ProsisMTTO%3bUser Id=SA%3bPassword=CAPUFE%3bIntegrated Security=false%3b</Value>
     </DestinationConnectionStrings>
   </ItemGroup>
 </Project>

@@ -31,9 +31,9 @@ namespace ProsisMTTO
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowAPIRequest",
-                    builder => builder.WithOrigins("*")
-                                      .WithMethods("*")
-                                      .WithHeaders("*"));
+                    builder => builder.AllowAnyOrigin()
+                                      .AllowAnyMethod()
+                                      .AllowAnyHeader());
             });
 
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));

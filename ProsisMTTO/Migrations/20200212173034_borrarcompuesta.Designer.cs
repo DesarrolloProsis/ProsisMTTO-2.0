@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProsisMTTO.Context;
 
 namespace ProsisMTTO.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200212173034_borrarcompuesta")]
+    partial class borrarcompuesta
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -100,8 +102,7 @@ namespace ProsisMTTO.Migrations
 
                     b.Property<string>("IdGare")
                         .IsRequired()
-                        .HasColumnType("nvarchar(3)")
-                        .HasMaxLength(3);
+                        .HasColumnType("nvarchar(3)");
 
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
@@ -141,9 +142,6 @@ namespace ProsisMTTO.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.HasIndex("LanesCatalogId", "IdGare")
-                        .IsUnique();
-
                     b.ToTable("DTCTechnical");
                 });
 
@@ -152,10 +150,6 @@ namespace ProsisMTTO.Migrations
                     b.Property<string>("CapufeLaneNum")
                         .HasColumnType("nvarchar(20)")
                         .HasMaxLength(20);
-
-                    b.Property<string>("IdGare")
-                        .HasColumnType("nvarchar(3)")
-                        .HasMaxLength(3);
 
                     b.Property<string>("Lane")
                         .IsRequired()
@@ -173,7 +167,7 @@ namespace ProsisMTTO.Migrations
                     b.Property<int?>("TypeCarrilId")
                         .HasColumnType("int");
 
-                    b.HasKey("CapufeLaneNum", "IdGare")
+                    b.HasKey("CapufeLaneNum")
                         .HasName("PrimaryKey_CapufeLaneNum");
 
                     b.HasIndex("SquaresCatalogId");
@@ -319,15 +313,15 @@ namespace ProsisMTTO.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ProsisMTTO.Entities.User", null)
-                        .WithMany("DTCTechnical")
-                        .HasForeignKey("UserId")
+                    b.HasOne("ProsisMTTO.Entities.LanesCatalog", null)
+                        .WithOne("DTCTechnical")
+                        .HasForeignKey("ProsisMTTO.Entities.DTCTechnical", "LanesCatalogId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ProsisMTTO.Entities.LanesCatalog", null)
-                        .WithOne("DTCTechnical")
-                        .HasForeignKey("ProsisMTTO.Entities.DTCTechnical", "LanesCatalogId", "IdGare")
+                    b.HasOne("ProsisMTTO.Entities.User", null)
+                        .WithMany("DTCTechnical")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

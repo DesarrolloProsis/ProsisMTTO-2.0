@@ -21,10 +21,17 @@ namespace ProsisMTTO.Context
             public DbSet<DTCHeader> DTCHeaders { get; set; }
             public DbSet<DTCMovement> DTCMovements { get; set; }
             public DbSet<DTCTechnical> DTCTechnical { get; set; }
+        public DbSet<TypeCarril> TypeCarrils { get; set; }
 
 
-            protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
             {
+
+            modelBuilder.Entity<TypeCarril>().HasData(
+                new TypeCarril {TypeCarrilId = 1, Name = "Express"},
+                new TypeCarril { TypeCarrilId = 2, Name = "Multimodal"}
+            );
+
                 modelBuilder.Entity<User>(db =>
                 {
                     db.Property<int>("UserId")
@@ -41,7 +48,6 @@ namespace ProsisMTTO.Context
 
                     db.HasKey("UserId")
                         .HasName("PrimaryKey_UserId");
-
 
                     db.ToTable("Users");
                 });
@@ -123,6 +129,11 @@ namespace ProsisMTTO.Context
                             .HasColumnType("nvarchar(20)")
                             .HasMaxLength(20);
 
+                    db.Property<string>("IdGare")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(3)")
+                        .HasMaxLength(3);
+
                     db.Property<string>("Lane")
                         .IsRequired()
                         .HasColumnType("nvarchar(4)")
@@ -136,7 +147,7 @@ namespace ProsisMTTO.Context
                         .IsRequired()
                         .HasColumnType("nvarchar(10)");
 
-                    db.HasKey("CapufeLaneNum")
+                    db.HasKey("CapufeLaneNum", "IdGare")
                         .HasName("PrimaryKey_CapufeLaneNum");
 
                     db.HasIndex("SquaresCatalogId");
@@ -184,6 +195,11 @@ namespace ProsisMTTO.Context
                         .IsRequired()
                         .HasColumnType("nvarchar(20)");
 
+                    db.Property<string>("IdGare")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(3)")
+                        .HasMaxLength(3);
+
                     db.Property<string>("Observation")
                         .HasColumnType("nvarchar(max)");
 
@@ -220,7 +236,7 @@ namespace ProsisMTTO.Context
 
                     db.HasOne("ProsisMTTO.Entities.LanesCatalog", null)
                         .WithOne("DTCTechnical")
-                        .HasForeignKey("ProsisMTTO.Entities.DTCTechnical", "LanesCatalogId")
+                        .HasForeignKey("ProsisMTTO.Entities.DTCTechnical", "LanesCatalogId", "IdGare")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

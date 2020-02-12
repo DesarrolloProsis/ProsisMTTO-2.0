@@ -26,15 +26,30 @@ namespace ProsisMTTO.Controllers
 
         // GET: api/LanesCatalogs
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<LanesCatalog>>> GetLanesCatalogs()
+        public async Task<ActionResult<List<object>>> GetLanesCatalogs()
         {
-            return await _context.LanesCatalogs.ToListAsync();
+            var query = await (from a in _context.LanesCatalogs
+                               join s in _context.TypeCarrils
+                               on a.LaneType equals s.TypeCarrilId
+                               select new
+                               {
+
+                                   CapufeLaneNum = a.CapufeLaneNum,
+                                   Lane = a.Lane,
+                                   IdGare = a.IdGare,
+                                   TypeCarril = s.Name,
+                                   SquaresCatalogId = a.SquaresCatalogId
+
+                               }).ToListAsync<object>();
+
+            return Ok(query); 
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<LanesCatalog>> GetLanesCatalog(string id)
         {
-            var lanesCatalog = await _context.LanesCatalogs.FindAsync(id);
+            var lanesCatalog = await _context.LanesCatalogs.Where(x => x.CapufeLaneNum == id).FirstAsync();
+            //var lanesCatalog = await _context.LanesCatalogs.FindAsync(id);
 
             if (lanesCatalog == null)
             {
@@ -51,7 +66,7 @@ namespace ProsisMTTO.Controllers
         {
             try
             {
-                if(param2 == null)
+                if (param2 == null)
                 {
                     var lanesCatalog = await _context.LanesCatalogs.Where(x => x.SquaresCatalogId == param1).ToListAsync();
 
@@ -101,14 +116,16 @@ namespace ProsisMTTO.Controllers
             //{
             //    return NotFound();
             //}
-                      
+
         }
 
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutLanesCatalog(string id, [FromBody] LanesCatalog lanesCatalog)
+        public async Task<IActionResult> PutLanesCatalog(string id, LanesCatalog lanesCatalog)
         {
+            //var lanesCatalog = await _context.LanesCatalogs.Where(x => x.CapufeLaneNum == id).FirstAsync();
+
             if (id != lanesCatalog.CapufeLaneNum)
             {
                 return BadRequest();
@@ -187,6 +204,7 @@ namespace ProsisMTTO.Controllers
 
         // DELETE: api/LanesCatalogs/5
         [HttpDelete("{id}")]
+        [EnableCors("AllowAPIRequest")]
         public async Task<ActionResult<LanesCatalog>> DeleteLanesCatalog(string id)
         {
             var lanesCatalog = await _context.LanesCatalogs.FindAsync(id);

@@ -11,10 +11,13 @@ namespace ProsisMTTO.Entities
     {
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public string CapufeLaneNum { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public string IdGare { get; set; }
         public string Lane { get; set; }
         public int LaneType { get; set; }
         public string SquaresCatalogId { get; set; }
 
         public DTCTechnical DTCTechnical { get; set; }
+        public TypeCarril TypeCarril { get; set; }
     }
 }

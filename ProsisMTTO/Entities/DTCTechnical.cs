@@ -13,6 +13,7 @@ namespace ProsisMTTO.Entities
         public string ReferenceNum { get; set; }
         public ICollection<DTCMovement> DTCMovements { get; set; }
         public string LanesCatalogId { get; set; }
+        public string IdGare { get; set; }
         public int UserId { get; set; }
         public string DTCHeaderId { get; set; }
         public ICollection<SparePartsCatalog> SparePartsCatalogs { get; set; }
