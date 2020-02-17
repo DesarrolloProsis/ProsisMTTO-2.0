@@ -16,7 +16,7 @@ namespace ProsisMTTO.Entities
         public string IdGare { get; set; }
         public int UserId { get; set; }
         public string DTCHeaderId { get; set; }
-        public ICollection<SparePartsCatalog> SparePartsCatalogs { get; set; }
+        //public ICollection<DTCInventory> DTCInventories { get; set; }
 
         public string AxaNum { get; set; }
         public int FailureNum { get; set; }

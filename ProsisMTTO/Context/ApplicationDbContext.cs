@@ -15,13 +15,15 @@ namespace ProsisMTTO.Context
             }
 
             public DbSet<User> Users { get; set; }
-            public DbSet<SparePartsCatalog> SparePartsCatalogs { get; set; }
+            public DbSet<Inventory> Inventories { get; set; }
             public DbSet<SquaresCatalog> SquaresCatalogs { get; set; }
             public DbSet<LanesCatalog> LanesCatalogs { get; set; }
             public DbSet<DTCHeader> DTCHeaders { get; set; }
             public DbSet<DTCMovement> DTCMovements { get; set; }
             public DbSet<DTCTechnical> DTCTechnical { get; set; }
-        public DbSet<TypeCarril> TypeCarrils { get; set; }
+            public DbSet<TypeCarril> TypeCarrils { get; set; }
+            public DbSet<Component> Components { get; set; }
+            public DbSet<DTCInventory> DTCInventories { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -32,7 +34,43 @@ namespace ProsisMTTO.Context
                 new TypeCarril { TypeCarrilId = 2, Name = "Multimodal"}
             );
 
-                modelBuilder.Entity<User>(db =>
+            modelBuilder.Entity<Component>(db =>
+            {
+                db.Property<string>("ComponentName")
+                .HasColumnType("nvarchar(20)")
+                .HasMaxLength(20);
+
+                db.HasKey("ComponentName")
+                .HasName("PrimaryKey_ComponentName");
+
+                db.Property<string>("Year")
+                        .HasColumnType("nvarchar(4)")
+                        .HasMaxLength(4);
+
+                db.Property<double>("Price")
+                        .HasColumnType("real");
+            });
+
+            modelBuilder.Entity<DTCInventory>(db =>
+            {
+                db.HasKey("Id");
+
+                db.Property<DateTime>("DateRecord")
+                        .HasColumnType("datetime2");
+
+                //db.HasOne("ProsisMTTO.Entities.DTCTechnical", "DTCTechnical")
+                //            .WithMany("DTCInventories")
+                //            .HasForeignKey("DTCTechnicalId");
+
+                //db.HasOne("ProsisMTTO.Entities.Inventory", null)
+                //            .WithOne("DTCInventories")
+                //            .HasForeignKey("ProsisMTTO.Entities.Inventory", "InventoryId")
+                //            .OnDelete(DeleteBehavior.Cascade)
+                //.IsRequired();
+
+            });
+
+            modelBuilder.Entity<User>(db =>
                 {
                     db.Property<int>("UserId")
                             .HasColumnType("int")
@@ -74,14 +112,16 @@ namespace ProsisMTTO.Context
                     db.ToTable("SquaresCatalogs");
                 });
 
-                modelBuilder.Entity<SparePartsCatalog>(db =>
+                modelBuilder.Entity<Inventory>(db =>
                 {
+                    db.Property<int>("Id")
+                            .HasColumnType("int");
+
                     db.Property<string>("NumPart")
                             .HasColumnType("nvarchar(50)")
                             .HasMaxLength(50);
 
                     db.Property<string>("Brand")
-                        .IsRequired()
                         .HasColumnType("nvarchar(25)")
                         .HasMaxLength(25);
 
@@ -97,7 +137,6 @@ namespace ProsisMTTO.Context
                         .HasMaxLength(25);
 
                     db.Property<string>("PieceYear")
-                        .IsRequired()
                         .HasColumnType("nvarchar(5)")
                         .HasMaxLength(5);
 
@@ -108,15 +147,14 @@ namespace ProsisMTTO.Context
                         .HasColumnType("nvarchar(max)");
 
                     db.Property<string>("TypeService")
-                        .IsRequired()
                         .HasColumnType("nvarchar(25)")
                         .HasMaxLength(25);
 
                     db.Property<int>("Unit")
                         .HasColumnType("int");
 
-                    db.HasKey("NumPart")
-                        .HasName("PrimaryKey_NumPart");
+                    db.HasKey("Id")
+                        .HasName("PrimaryKey_Id");
 
                     db.HasIndex("DTCTechnicalReferenceNum");
 

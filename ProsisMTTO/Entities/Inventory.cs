@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace ProsisMTTO.Entities
 {
-    public class SparePartsCatalog
+    public class Inventory
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        //[DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public int Id { get; set; }
         public string NumPart { get; set; }
         public string TypeService { get; set; }
         public string Name { get; set; }
@@ -20,6 +21,6 @@ namespace ProsisMTTO.Entities
         public string SparePartImage { get; set; }
         public string Description { get; set; }
 
-        public DTCTechnical DTCTechnical { get; set; }
+        //public DTCInventory DTCInventory { get; set; }
     }
 }

@@ -55,24 +55,14 @@ namespace ProsisMTTO
 
             app.UseRouting();
 
-            app.UseAuthorization();
-
-            //app.UseCors(builder => builder
-            //    .AllowAnyHeader()
-            //    .AllowAnyMethod()
-            //    .SetIsOriginAllowed((host) => true)
-            //    .AllowCredentials()
-            //    );
-
             app.UseCors();
-                //.WithOrigins()
-                //.WithMethods("*")
-                //.WithHeaders("*"));
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+
         }
     }
 }

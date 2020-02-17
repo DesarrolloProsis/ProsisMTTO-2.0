@@ -45,10 +45,10 @@ namespace ProsisMTTO.Controllers
             return Ok(query); 
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<LanesCatalog>> GetLanesCatalog(string id)
+        [HttpGet("{id}/{id2}")]
+        public async Task<ActionResult<List<LanesCatalog>>> GetLanesCatalog(string id, string id2)
         {
-            var lanesCatalog = await _context.LanesCatalogs.Where(x => x.CapufeLaneNum == id).FirstAsync();
+            var lanesCatalog = await _context.LanesCatalogs.Where(x => x.CapufeLaneNum == id && x.IdGare == id2).ToListAsync();
             //var lanesCatalog = await _context.LanesCatalogs.FindAsync(id);
 
             if (lanesCatalog == null)
@@ -62,13 +62,28 @@ namespace ProsisMTTO.Controllers
 
         // GET: api/LanesCatalogs/5
         [HttpGet("params/{param1}/{param2?}")]
-        public async Task<ActionResult<List<LanesCatalog>>> GetLanesCatalog(string param1, int? param2)
+        public async Task<ActionResult<List<object>>> GetLanesCatalog(string param1, int? param2)
         {
             try
             {
                 if (param2 == null)
                 {
-                    var lanesCatalog = await _context.LanesCatalogs.Where(x => x.SquaresCatalogId == param1).ToListAsync();
+                    //var lanesCatalog = await _context.LanesCatalogs.Where(x => x.SquaresCatalogId == param1).ToListAsync();
+
+                    var lanesCatalog = await (from a in _context.LanesCatalogs
+                                       join s in _context.TypeCarrils
+                                       on a.LaneType equals s.TypeCarrilId
+                                       where (a.SquaresCatalogId == param1)
+                                       select new
+                                       {
+
+                                           CapufeLaneNum = a.CapufeLaneNum,
+                                           Lane = a.Lane,
+                                           IdGare = a.IdGare,
+                                           TypeCarril = s.Name,
+                                           SquaresCatalogId = a.SquaresCatalogId
+
+                                       }).ToListAsync<object>();
 
                     if (lanesCatalog == null)
                     {
@@ -79,54 +94,45 @@ namespace ProsisMTTO.Controllers
                 }
                 else
                 {
-                    var lanesCatalog = await _context.LanesCatalogs.Where(x => x.SquaresCatalogId == param1 && x.LaneType == param2).ToListAsync();
+                    //var lanesCatalog = await _context.LanesCatalogs.Where(x => x.SquaresCatalogId == param1 && x.LaneType == param2).ToListAsync();
+
+                    var lanesCatalog = await (from a in _context.LanesCatalogs
+                                       join s in _context.TypeCarrils
+                                       on a.LaneType equals s.TypeCarrilId
+                                       where(a.SquaresCatalogId == param1 && a.LaneType == param2)
+                                       select new
+                                       {
+
+                                           CapufeLaneNum = a.CapufeLaneNum,
+                                           Lane = a.Lane,
+                                           IdGare = a.IdGare,
+                                           TypeCarril = s.Name,
+                                           SquaresCatalogId = a.SquaresCatalogId
+
+                                       }).ToListAsync<object>();
 
                     if (lanesCatalog == null)
                     {
                         return NotFound();
                     }
 
-                    return lanesCatalog;
+                    return Ok(lanesCatalog);
                 }
             }
             catch
             {
                 return NotFound();
             }
-            //List<LanesCatalog> lanesCatalogs = null;
-            //try
-            //{
-            //    if (id != null)
-            //        {
-            //        //var lanesCatalog = await _context.LanesCatalogs.FindAsync(id);
-            //        lanesCatalogs = new List<LanesCatalog>
-            //        {
-            //            id
-            //        };
-
-            //            return lanesCatalogs;
-            //        }
-            //    else
-            //    {
-            //       var lanesCatalog = await _context.LanesCatalogs.Where(x => x.SquaresCatalogId == param1 && x.LaneType == param2).ToListAsync();
-            //        return lanesCatalog;
-            //    }
-            //}
-            //catch (Exception)
-            //{
-            //    return NotFound();
-            //}
-
         }
 
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutLanesCatalog(string id, LanesCatalog lanesCatalog)
+        [HttpPut("{id}/{id2}")]
+        [EnableCors("AllowAPIRequest")]
+        public async Task<IActionResult> PutLanesCatalog(string id, string id2, LanesCatalog lanesCatalog)
         {
-            //var lanesCatalog = await _context.LanesCatalogs.Where(x => x.CapufeLaneNum == id).FirstAsync();
 
-            if (id != lanesCatalog.CapufeLaneNum)
+            if (id != lanesCatalog.CapufeLaneNum && id2 != lanesCatalog.IdGare)
             {
                 return BadRequest();
             }
@@ -148,31 +154,6 @@ namespace ProsisMTTO.Controllers
                     throw;
                 }
             }
-
-            //var _laneCatalog = await _context.LanesCatalogs.FirstOrDefaultAsync(x => x.CapufeLaneNum.Equals(id));
-
-            //_context.Entry(_laneCatalog).CurrentValues.SetValues(lanesCatalog);
-
-            //try
-            //{
-            //    await _context.SaveChangesAsync();
-            //}
-            //catch (Exception ex)
-            //{
-            //    throw;
-            //}
-            //catch (DbUpdateConcurrencyException)
-            //{
-            //    if (!LanesCatalogExists(id))
-            //    {
-            //        return NotFound();
-            //    }
-            //    else
-            //    {
-            //        throw;
-            //    }
-            //}
-
             return NoContent();
         }
 
@@ -180,6 +161,7 @@ namespace ProsisMTTO.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
+        [EnableCors("AllowAPIRequest")]
         public async Task<ActionResult<LanesCatalog>> PostLanesCatalog([FromBody] LanesCatalog lanesCatalog)
         {
             _context.LanesCatalogs.Add(lanesCatalog);
@@ -199,15 +181,16 @@ namespace ProsisMTTO.Controllers
                 }
             }
 
-            return CreatedAtAction("GetLanesCatalog", new { id = lanesCatalog.CapufeLaneNum }, lanesCatalog);
+            return CreatedAtAction("GetLanesCatalog", new { id = lanesCatalog.CapufeLaneNum, id2 = lanesCatalog.IdGare }, lanesCatalog);
         }
 
         // DELETE: api/LanesCatalogs/5
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}/{id2}")]
         [EnableCors("AllowAPIRequest")]
-        public async Task<ActionResult<LanesCatalog>> DeleteLanesCatalog(string id)
+        public async Task<ActionResult<LanesCatalog>> DeleteLanesCatalog(string id, string id2)
         {
-            var lanesCatalog = await _context.LanesCatalogs.FindAsync(id);
+            var lanesCatalog = await _context.LanesCatalogs.Where(x => x.CapufeLaneNum == id && x.IdGare == id2).FirstAsync();
+
             if (lanesCatalog == null)
             {
                 return NotFound();
