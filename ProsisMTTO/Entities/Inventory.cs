@@ -18,9 +18,12 @@ namespace ProsisMTTO.Entities
         public float Price { get; set; }
         public int Unit { get; set; }
         public string PieceYear { get; set; }
-        public string SparePartImage { get; set; }
+        public string InventoryImage { get; set; }
         public string Description { get; set; }
+        public int ComponentId { get; set; }
+        public bool Status { get; set; }
 
-        //public DTCInventory DTCInventory { get; set; }
+        public DTCInventory DTCInventory { get; set; }
+
     }
 }

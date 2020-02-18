@@ -9,6 +9,6 @@ namespace ProsisMTTO.Entities
     {
         public int TypeCarrilId { get; set; }
         public string Name { get; set; }
-        public string LanesCatalog { get; set; }
+        public ICollection<LanesCatalog> LanesCatalogs { get; set; }
     }
 }

@@ -8,9 +8,11 @@ namespace ProsisMTTO.Entities
 {
     public class Component
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public int ComponentId { get; set; }
         public string ComponentName { get; set; }
         public string Year { get; set; }
         public double Price { get; set; }
+
+        public ICollection<Inventory> Inventories { get; set; }
     }
 }
