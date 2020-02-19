@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -23,16 +24,18 @@ namespace ProsisMTTO.Controllers
 
         // GET: api/Components
         [HttpGet]
+        [EnableCors("AllowAPIRequest")]
         public async Task<ActionResult<IEnumerable<Component>>> GetComponents()
         {
             return await _context.Components.ToListAsync();
         }
 
         // GET: api/Components/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Component>> GetComponent(int id)
+        [HttpGet("{year}")]
+        [EnableCors("AllowAPIRequest")]
+        public async Task<ActionResult<IEnumerable<Component>>> GetComponent(string year)
         {
-            var component = await _context.Components.FindAsync(id);
+            var component = await _context.Components.Where(x => x.Year == year).ToListAsync();
 
             if (component == null)
             {
@@ -46,6 +49,7 @@ namespace ProsisMTTO.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
+        [EnableCors("AllowAPIRequest")]
         public async Task<IActionResult> PutComponent(int id, Component component)
         {
             if (id != component.ComponentId)
@@ -78,6 +82,7 @@ namespace ProsisMTTO.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
+        [EnableCors("AllowAPIRequest")]
         public async Task<ActionResult<Component>> PostComponent(Component component)
         {
             _context.Components.Add(component);
@@ -88,6 +93,7 @@ namespace ProsisMTTO.Controllers
 
         // DELETE: api/Components/5
         [HttpDelete("{id}")]
+        [EnableCors("AllowAPIRequest")]
         public async Task<ActionResult<Component>> DeleteComponent(int id)
         {
             var component = await _context.Components.FindAsync(id);
