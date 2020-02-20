@@ -8124,23 +8124,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Desarrollo05\\.nuget\\packages\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\Desarrollo3\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Desarrollo05\\Desktop\\prosismtto-repositorio\\ProsisMTTO-2.0\\ProsisMTTO\\ProsisMTTO.csproj",
+      "projectUniqueName": "C:\\Users\\Desarrollo3\\Desktop\\ProsisMTTO-2.0\\ProsisMTTO\\ProsisMTTO.csproj",
       "projectName": "ProsisMTTO",
-      "projectPath": "C:\\Users\\Desarrollo05\\Desktop\\prosismtto-repositorio\\ProsisMTTO-2.0\\ProsisMTTO\\ProsisMTTO.csproj",
-      "packagesPath": "C:\\Users\\Desarrollo05\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Desarrollo05\\Desktop\\prosismtto-repositorio\\ProsisMTTO-2.0\\ProsisMTTO\\obj\\",
+      "projectPath": "C:\\Users\\Desarrollo3\\Desktop\\ProsisMTTO-2.0\\ProsisMTTO\\ProsisMTTO.csproj",
+      "packagesPath": "C:\\Users\\Desarrollo3\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Desarrollo3\\Desktop\\ProsisMTTO-2.0\\ProsisMTTO\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-      ],
       "configFilePaths": [
-        "C:\\Users\\Desarrollo05\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Desarrollo3\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -8201,7 +8197,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.0.102\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files (x86)\\dotnet\\sdk\\3.0.100\\RuntimeIdentifierGraph.json"
       }
     }
   }
