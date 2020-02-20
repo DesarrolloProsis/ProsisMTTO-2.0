@@ -24,6 +24,9 @@ namespace ProsisMTTO.Context
             public DbSet<Component> Components { get; set; }
             public DbSet<Inventory> Inventories { get; set; }
             public DbSet<DTCInventory> DTCInventories { get; set; }
+            public DbSet<DTCService> DTCServices { get; set; }
+            public DbSet<ServiceType> ServiceTypes { get; set; }
+            public DbSet<Unit> Units { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -42,26 +45,72 @@ namespace ProsisMTTO.Context
 
             });
 
-            //modelBuilder.Entity<Component>(db =>
-            //{
-            //    db.Property<string>("ComponentName")
-            //    .HasColumnType("nvarchar(20)")
-            //    .HasMaxLength(20);
+            modelBuilder.Entity<ServiceType>().HasData(
+                new ServiceType { ServiceTypeId = 1, Name = "Servicio" },
+                new ServiceType { ServiceTypeId = 2, Name = "Refaccion" },
+                new ServiceType { ServiceTypeId = 3, Name = "Componente" }
+            );
 
-            //    db.HasKey("ComponentName")
-            //    .HasName("PrimaryKey_ComponentName");
+            modelBuilder.Entity<ServiceType>(db =>
+            {
+                db.Property<string>("Name")
+                    .HasColumnType("nvarchar(20)")
+                    .HasMaxLength(20);
 
-            //    db.Property<string>("Year")
-            //            .HasColumnType("nvarchar(4)")
-            //            .HasMaxLength(4);
+            });
 
-            //    db.Property<double>("Price")
-            //            .HasColumnType("real");
-            //});
+            modelBuilder.Entity<Unit>().HasData(
+                new Unit { UnitTypeId = 1, Name = "Pza" },
+                new Unit { UnitTypeId = 2, Name = "Metro" },
+                new Unit { UnitTypeId = 3, Name = "Mano de Obra" }
+            );
+
+            modelBuilder.Entity<Unit>(db =>
+            {
+                db.HasKey("UnitTypeId");
+
+                db.Property<string>("Name")
+                    .HasColumnType("nvarchar(20)")
+                    .HasMaxLength(20);
+
+            });
+
+            modelBuilder.Entity<Component>(db =>
+            {
+                db.Property<string>("ComponentName")
+                .HasColumnType("nvarchar(50)")
+                .HasMaxLength(50);
+
+                db.Property<string>("Year")
+                        .HasColumnType("nvarchar(4)")
+                        .HasMaxLength(4);
+
+                db.Property<double>("Price")
+                        .HasColumnType("real");
+
+                db.Property<string>("Brand")
+                    .HasColumnType("nvarchar(25)")
+                    .HasMaxLength(25);
+
+                db.Property<int>("ServiceTypeId");
+
+                db.Property<string>("Description")
+                    .HasColumnType("nvarchar(300)")
+                    .HasMaxLength(300);
+            });
 
             modelBuilder.Entity<DTCInventory>(db =>
             {
                 db.HasKey("DTCTechnicalId", "InventoryId");
+
+                db.Property<DateTime>("DateRecord")
+                        .HasColumnType("datetime2");
+
+            });
+
+            modelBuilder.Entity<DTCService>(db =>
+            {
+                db.HasKey("DTCTechnicalId", "ComponentId");
 
                 db.Property<DateTime>("DateRecord")
                         .HasColumnType("datetime2");
@@ -123,10 +172,6 @@ namespace ProsisMTTO.Context
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                db.Property<string>("Brand")
-                    .HasColumnType("nvarchar(25)")
-                    .HasMaxLength(25);
-
                 db.Property<string>("Description")
                     .HasColumnType("nvarchar(300)")
                     .HasMaxLength(300);
@@ -140,16 +185,9 @@ namespace ProsisMTTO.Context
                     .HasColumnType("nvarchar(4)")
                     .HasMaxLength(4);
 
-                db.Property<float>("Price")
-                    .HasColumnType("real");
-
                 db.Property<string>("InventoryImage")
                     .HasColumnType("nvarchar(500)")
                     .HasMaxLength(500);
-
-                db.Property<string>("TypeService")
-                    .HasColumnType("nvarchar(25)")
-                    .HasMaxLength(25);
 
                 db.Property<int>("Unit")
                     .HasColumnType("int");

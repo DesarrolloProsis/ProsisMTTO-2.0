@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProsisMTTO.Context;
 
 namespace ProsisMTTO.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200219232154_ServiceTypeAdded")]
+    partial class ServiceTypeAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,9 +46,6 @@ namespace ProsisMTTO.Migrations
                     b.Property<int>("ServiceTypeId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UnitTypeId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Year")
                         .HasColumnType("nvarchar(4)")
                         .HasMaxLength(4);
@@ -54,8 +53,6 @@ namespace ProsisMTTO.Migrations
                     b.HasKey("ComponentId");
 
                     b.HasIndex("ServiceTypeId");
-
-                    b.HasIndex("UnitTypeId");
 
                     b.ToTable("Components");
                 });
@@ -394,39 +391,6 @@ namespace ProsisMTTO.Migrations
                         });
                 });
 
-            modelBuilder.Entity("ProsisMTTO.Entities.Unit", b =>
-                {
-                    b.Property<int>("UnitTypeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(20)")
-                        .HasMaxLength(20);
-
-                    b.HasKey("UnitTypeId");
-
-                    b.ToTable("Units");
-
-                    b.HasData(
-                        new
-                        {
-                            UnitTypeId = 1,
-                            Name = "Pza"
-                        },
-                        new
-                        {
-                            UnitTypeId = 2,
-                            Name = "Metro"
-                        },
-                        new
-                        {
-                            UnitTypeId = 3,
-                            Name = "Mano de Obra"
-                        });
-                });
-
             modelBuilder.Entity("ProsisMTTO.Entities.User", b =>
                 {
                     b.Property<int>("UserId")
@@ -458,10 +422,6 @@ namespace ProsisMTTO.Migrations
                         .HasForeignKey("ServiceTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("ProsisMTTO.Entities.Unit", "Unit")
-                        .WithMany("Components")
-                        .HasForeignKey("UnitTypeId");
                 });
 
             modelBuilder.Entity("ProsisMTTO.Entities.DTCInventory", b =>

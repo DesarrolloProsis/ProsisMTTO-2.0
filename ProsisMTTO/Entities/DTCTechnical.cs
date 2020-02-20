@@ -17,6 +17,7 @@ namespace ProsisMTTO.Entities
         public int UserId { get; set; }
         public string DTCHeaderId { get; set; }
         public ICollection<DTCInventory> DTCInventories { get; set; }
+        public ICollection<DTCService> DTCServices { get; set; }
 
         public string AxaNum { get; set; }
         public int FailureNum { get; set; }
