@@ -13,6 +13,8 @@
     <Compile Remove="Migrations\20200218163422_initial4.Designer.cs" />
     <Compile Remove="Migrations\20200218163722_quitoComponentes.cs" />
     <Compile Remove="Migrations\20200218163722_quitoComponentes.Designer.cs" />
+    <Compile Remove="Migrations\20200220181058_restoreScheme.cs" />
+    <Compile Remove="Migrations\20200220181058_restoreScheme.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -21,12 +21,12 @@ namespace ProsisMTTO.Context
             public DbSet<DTCMovement> DTCMovements { get; set; }
             public DbSet<DTCTechnical> DTCTechnical { get; set; }
             public DbSet<TypeCarril> TypeCarrils { get; set; }
-            public DbSet<Component> Components { get; set; }
             public DbSet<Inventory> Inventories { get; set; }
             public DbSet<DTCInventory> DTCInventories { get; set; }
-            public DbSet<DTCService> DTCServices { get; set; }
-            public DbSet<ServiceType> ServiceTypes { get; set; }
             public DbSet<Unit> Units { get; set; }
+            public DbSet<ServiceType> ServiceTypes { get; set; }
+            public DbSet<DTCService> DTCServices { get; set; }
+            public DbSet<Component> Components { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -92,11 +92,13 @@ namespace ProsisMTTO.Context
                     .HasColumnType("nvarchar(25)")
                     .HasMaxLength(25);
 
-                db.Property<int>("ServiceTypeId");
-
                 db.Property<string>("Description")
                     .HasColumnType("nvarchar(300)")
                     .HasMaxLength(300);
+
+                db.Property<int>("ServiceTypeNum");
+
+                db.Property<int>("UnitTypeNum");
             });
 
             modelBuilder.Entity<DTCInventory>(db =>

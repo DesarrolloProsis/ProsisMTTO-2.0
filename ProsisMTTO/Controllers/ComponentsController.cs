@@ -27,7 +27,7 @@ namespace ProsisMTTO.Controllers
         [EnableCors("AllowAPIRequest")]
         public async Task<ActionResult<IEnumerable<Component>>> GetComponents()
         {
-            return await _context.Components.Where(x => x.ServiceTypeId != 1).ToListAsync();
+            return await _context.Components.Where(x => x.ServiceTypeNum != 1).ToListAsync();
         }
 
         // GET: api/Components/5
@@ -35,7 +35,7 @@ namespace ProsisMTTO.Controllers
         [EnableCors("AllowAPIRequest")]
         public async Task<ActionResult<IEnumerable<Component>>> GetComponent(string year)
         {
-            var component = await _context.Components.Where(x => x.Year == year && x.ServiceTypeId != 1).ToListAsync();
+            var component = await _context.Components.Where(x => x.Year == year && x.ServiceTypeNum != 1).ToListAsync();
 
             if (component == null)
             {

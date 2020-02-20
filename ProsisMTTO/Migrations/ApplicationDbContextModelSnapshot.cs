@@ -41,10 +41,16 @@ namespace ProsisMTTO.Migrations
                     b.Property<float>("Price")
                         .HasColumnType("real");
 
-                    b.Property<int>("ServiceTypeId")
+                    b.Property<int?>("ServiceTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ServiceTypeNum")
                         .HasColumnType("int");
 
                     b.Property<int?>("UnitTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UnitTypeNum")
                         .HasColumnType("int");
 
                     b.Property<string>("Year")
@@ -455,9 +461,7 @@ namespace ProsisMTTO.Migrations
                 {
                     b.HasOne("ProsisMTTO.Entities.ServiceType", "ServiceType")
                         .WithMany("Components")
-                        .HasForeignKey("ServiceTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ServiceTypeId");
 
                     b.HasOne("ProsisMTTO.Entities.Unit", "Unit")
                         .WithMany("Components")

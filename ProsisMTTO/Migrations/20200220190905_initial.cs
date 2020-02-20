@@ -3,25 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ProsisMTTO.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "Components",
-                columns: table => new
-                {
-                    ComponentId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ComponentName = table.Column<string>(nullable: true),
-                    Year = table.Column<string>(nullable: true),
-                    Price = table.Column<double>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Components", x => x.ComponentId);
-                });
-
             migrationBuilder.CreateTable(
                 name: "DTCHeaders",
                 columns: table => new
@@ -34,6 +19,19 @@ namespace ProsisMTTO.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PrimaryKey_DTCHeaderId", x => x.DTCHeaderId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ServiceTypes",
+                columns: table => new
+                {
+                    ServiceTypeId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ServiceTypes", x => x.ServiceTypeId);
                 });
 
             migrationBuilder.CreateTable(
@@ -63,6 +61,19 @@ namespace ProsisMTTO.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Units",
+                columns: table => new
+                {
+                    UnitTypeId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Units", x => x.UnitTypeId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -74,35 +85,6 @@ namespace ProsisMTTO.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PrimaryKey_UserId", x => x.UserId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Inventory",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    NumPart = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    TypeService = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: true),
-                    Name = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
-                    Brand = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: true),
-                    Price = table.Column<float>(type: "real", nullable: false),
-                    Unit = table.Column<int>(type: "int", nullable: false),
-                    PieceYear = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: true),
-                    InventoryImage = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true),
-                    ComponentId = table.Column<int>(nullable: false),
-                    Status = table.Column<bool>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PrimaryKey_Id", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Inventory_Components_ComponentId",
-                        column: x => x.ComponentId,
-                        principalTable: "Components",
-                        principalColumn: "ComponentId",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -130,6 +112,39 @@ namespace ProsisMTTO.Migrations
                         column: x => x.TypeCarrilId,
                         principalTable: "TypeCarrils",
                         principalColumn: "TypeCarrilId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Components",
+                columns: table => new
+                {
+                    ComponentId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ComponentName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Year = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: true),
+                    Price = table.Column<float>(type: "real", nullable: false),
+                    Brand = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true),
+                    ServiceTypeNum = table.Column<int>(nullable: false),
+                    UnitTypeNum = table.Column<int>(nullable: false),
+                    ServiceTypeId = table.Column<int>(nullable: true),
+                    UnitTypeId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Components", x => x.ComponentId);
+                    table.ForeignKey(
+                        name: "FK_Components_ServiceTypes_ServiceTypeId",
+                        column: x => x.ServiceTypeId,
+                        principalTable: "ServiceTypes",
+                        principalColumn: "ServiceTypeId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Components_Units_UnitTypeId",
+                        column: x => x.UnitTypeId,
+                        principalTable: "Units",
+                        principalColumn: "UnitTypeId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -179,6 +194,77 @@ namespace ProsisMTTO.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Inventory",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NumPart = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
+                    Unit = table.Column<int>(type: "int", nullable: false),
+                    PieceYear = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: true),
+                    InventoryImage = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true),
+                    Status = table.Column<bool>(nullable: false),
+                    ComponentId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PrimaryKey_Id", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Inventory_Components_ComponentId",
+                        column: x => x.ComponentId,
+                        principalTable: "Components",
+                        principalColumn: "ComponentId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DTCMovements",
+                columns: table => new
+                {
+                    MovementId = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    DTCTechnicalId = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
+                    ModificationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PrimaryKey_MovementId", x => x.MovementId);
+                    table.ForeignKey(
+                        name: "FK_DTCMovements_DTCTechnical_DTCTechnicalId",
+                        column: x => x.DTCTechnicalId,
+                        principalTable: "DTCTechnical",
+                        principalColumn: "ReferenceNum",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DTCServices",
+                columns: table => new
+                {
+                    DTCTechnicalId = table.Column<string>(nullable: false),
+                    ComponentId = table.Column<int>(nullable: false),
+                    DateRecord = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DTCServices", x => new { x.DTCTechnicalId, x.ComponentId });
+                    table.ForeignKey(
+                        name: "FK_DTCServices_Components_ComponentId",
+                        column: x => x.ComponentId,
+                        principalTable: "Components",
+                        principalColumn: "ComponentId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DTCServices_DTCTechnical_DTCTechnicalId",
+                        column: x => x.DTCTechnicalId,
+                        principalTable: "DTCTechnical",
+                        principalColumn: "ReferenceNum",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "DTCInventories",
                 columns: table => new
                 {
@@ -203,35 +289,44 @@ namespace ProsisMTTO.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "DTCMovements",
-                columns: table => new
+            migrationBuilder.InsertData(
+                table: "ServiceTypes",
+                columns: new[] { "ServiceTypeId", "Name" },
+                values: new object[,]
                 {
-                    MovementId = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    DTCTechnicalId = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
-                    ModificationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PrimaryKey_MovementId", x => x.MovementId);
-                    table.ForeignKey(
-                        name: "FK_DTCMovements_DTCTechnical_DTCTechnicalId",
-                        column: x => x.DTCTechnicalId,
-                        principalTable: "DTCTechnical",
-                        principalColumn: "ReferenceNum",
-                        onDelete: ReferentialAction.Restrict);
+                    { 1, "Servicio" },
+                    { 2, "Refaccion" },
+                    { 3, "Componente" }
                 });
 
             migrationBuilder.InsertData(
                 table: "TypeCarrils",
                 columns: new[] { "TypeCarrilId", "Name" },
-                values: new object[] { 1, "Express" });
+                values: new object[,]
+                {
+                    { 1, "Express" },
+                    { 2, "Multimodal" }
+                });
 
             migrationBuilder.InsertData(
-                table: "TypeCarrils",
-                columns: new[] { "TypeCarrilId", "Name" },
-                values: new object[] { 2, "Multimodal" });
+                table: "Units",
+                columns: new[] { "UnitTypeId", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Pza" },
+                    { 2, "Metro" },
+                    { 3, "Mano de Obra" }
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Components_ServiceTypeId",
+                table: "Components",
+                column: "ServiceTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Components_UnitTypeId",
+                table: "Components",
+                column: "UnitTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DTCInventories_InventoryId",
@@ -243,6 +338,12 @@ namespace ProsisMTTO.Migrations
                 name: "IX_DTCMovements_DTCTechnicalId",
                 table: "DTCMovements",
                 column: "DTCTechnicalId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DTCServices_ComponentId",
+                table: "DTCServices",
+                column: "ComponentId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_DTCTechnical_DTCHeaderId",
@@ -292,6 +393,9 @@ namespace ProsisMTTO.Migrations
                 name: "DTCMovements");
 
             migrationBuilder.DropTable(
+                name: "DTCServices");
+
+            migrationBuilder.DropTable(
                 name: "Inventory");
 
             migrationBuilder.DropTable(
@@ -308,6 +412,12 @@ namespace ProsisMTTO.Migrations
 
             migrationBuilder.DropTable(
                 name: "LanesCatalogs");
+
+            migrationBuilder.DropTable(
+                name: "ServiceTypes");
+
+            migrationBuilder.DropTable(
+                name: "Units");
 
             migrationBuilder.DropTable(
                 name: "SquaresCatalogs");
