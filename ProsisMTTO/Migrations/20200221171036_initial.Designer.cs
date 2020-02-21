@@ -10,7 +10,7 @@ using ProsisMTTO.Context;
 namespace ProsisMTTO.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200220190905_initial")]
+    [Migration("20200221171036_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -43,13 +43,7 @@ namespace ProsisMTTO.Migrations
                     b.Property<float>("Price")
                         .HasColumnType("real");
 
-                    b.Property<int?>("ServiceTypeId")
-                        .HasColumnType("int");
-
                     b.Property<int>("ServiceTypeNum")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("UnitTypeId")
                         .HasColumnType("int");
 
                     b.Property<int>("UnitTypeNum")
@@ -60,10 +54,6 @@ namespace ProsisMTTO.Migrations
                         .HasMaxLength(4);
 
                     b.HasKey("ComponentId");
-
-                    b.HasIndex("ServiceTypeId");
-
-                    b.HasIndex("UnitTypeId");
 
                     b.ToTable("Components");
                 });
@@ -326,11 +316,16 @@ namespace ProsisMTTO.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("ComponentId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(20)")
                         .HasMaxLength(20);
 
                     b.HasKey("ServiceTypeId");
+
+                    b.HasIndex("ComponentId");
 
                     b.ToTable("ServiceTypes");
 
@@ -409,11 +404,16 @@ namespace ProsisMTTO.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("ComponentId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(20)")
                         .HasMaxLength(20);
 
                     b.HasKey("UnitTypeId");
+
+                    b.HasIndex("ComponentId");
 
                     b.ToTable("Units");
 
@@ -457,17 +457,6 @@ namespace ProsisMTTO.Migrations
                         .HasName("PrimaryKey_UserId");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("ProsisMTTO.Entities.Component", b =>
-                {
-                    b.HasOne("ProsisMTTO.Entities.ServiceType", "ServiceType")
-                        .WithMany("Components")
-                        .HasForeignKey("ServiceTypeId");
-
-                    b.HasOne("ProsisMTTO.Entities.Unit", "Unit")
-                        .WithMany("Components")
-                        .HasForeignKey("UnitTypeId");
                 });
 
             modelBuilder.Entity("ProsisMTTO.Entities.DTCInventory", b =>
@@ -548,6 +537,20 @@ namespace ProsisMTTO.Migrations
                     b.HasOne("ProsisMTTO.Entities.TypeCarril", "TypeCarril")
                         .WithMany("LanesCatalogs")
                         .HasForeignKey("TypeCarrilId");
+                });
+
+            modelBuilder.Entity("ProsisMTTO.Entities.ServiceType", b =>
+                {
+                    b.HasOne("ProsisMTTO.Entities.Component", "Component")
+                        .WithMany("ServiceTypes")
+                        .HasForeignKey("ComponentId");
+                });
+
+            modelBuilder.Entity("ProsisMTTO.Entities.Unit", b =>
+                {
+                    b.HasOne("ProsisMTTO.Entities.Component", "Component")
+                        .WithMany("Units")
+                        .HasForeignKey("ComponentId");
                 });
 #pragma warning restore 612, 618
         }

@@ -9,6 +9,6 @@ namespace ProsisMTTO.Entities
     {
         public int ServiceTypeId { get; set; }
         public string Name { get; set; }
-        public ICollection<Component> Components { get; set; }
+        public Component Component { get; set; }
     }
 }

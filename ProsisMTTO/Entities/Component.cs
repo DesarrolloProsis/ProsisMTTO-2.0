@@ -21,7 +21,7 @@ namespace ProsisMTTO.Entities
 
         public ICollection<Inventory> Inventories { get; set; }
         public DTCService DTCService { get; set; }
-        public ServiceType ServiceType { get; set; }
-        public Unit Unit { get; set; }
+        public ICollection<Unit> Units { get; set; }
+        public ICollection<ServiceType> ServiceTypes { get; set; }
     }
 }
