@@ -16,12 +16,10 @@ namespace ProsisMTTO.Entities
         public double Price { get; set; }
         public string Brand { get; set; }
         public string Description { get; set; }
-        public int ServiceTypeNum { get; set; }
-        public int UnitTypeNum { get; set; }
 
         public ICollection<Inventory> Inventories { get; set; }
         public DTCService DTCService { get; set; }
-        public ICollection<Unit> Units { get; set; }
-        public ICollection<ServiceType> ServiceTypes { get; set; }
+        public int UnitId { get; set; }
+        public int ServiceTypeId { get; set; }
     }
 }

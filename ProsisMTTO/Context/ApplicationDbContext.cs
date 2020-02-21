@@ -95,10 +95,6 @@ namespace ProsisMTTO.Context
                 db.Property<string>("Description")
                     .HasColumnType("nvarchar(300)")
                     .HasMaxLength(300);
-
-                db.Property<int>("ServiceTypeNum");
-
-                db.Property<int>("UnitTypeNum");
             });
 
             modelBuilder.Entity<DTCInventory>(db =>
