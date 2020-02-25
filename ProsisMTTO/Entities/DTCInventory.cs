@@ -9,6 +9,9 @@ namespace ProsisMTTO.Entities
     {
         public string DTCTechnicalId { get; set; }
         public int InventoryId { get; set; }
-        public DateTime DateRecord { get; set; }
+        public DateTime DateRecordRequest { get; set; }       
+        public Boolean Authorization { get; set; } 
+        public string Location { get; set; }
+
     }
 }

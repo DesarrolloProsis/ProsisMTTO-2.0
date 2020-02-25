@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProsisMTTO.Context;
 
 namespace ProsisMTTO.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200225183049_MitraCarrilesDTC5")]
+    partial class MitraCarrilesDTC5
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,9 +54,6 @@ namespace ProsisMTTO.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("AutomaticSignature")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Brand")
                         .HasColumnType("nvarchar(25)")
@@ -132,15 +131,8 @@ namespace ProsisMTTO.Migrations
                     b.Property<int>("InventoryId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("Authorization")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("DateRecordRequest")
+                    b.Property<DateTime>("DateRecord")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("Location")
-                        .HasColumnType("nvarchar(5)")
-                        .HasMaxLength(5);
 
                     b.HasKey("DTCTechnicalId", "InventoryId");
 
@@ -188,7 +180,8 @@ namespace ProsisMTTO.Migrations
 
                     b.HasKey("DTCTechnicalId", "ComponentId");
 
-                    b.HasIndex("ComponentId");
+                    b.HasIndex("ComponentId")
+                        .IsUnique();
 
                     b.ToTable("DTCServices");
                 });
@@ -556,8 +549,8 @@ namespace ProsisMTTO.Migrations
             modelBuilder.Entity("ProsisMTTO.Entities.DTCService", b =>
                 {
                     b.HasOne("ProsisMTTO.Entities.Component", null)
-                        .WithMany("DTCServices")
-                        .HasForeignKey("ComponentId")
+                        .WithOne("DTCService")
+                        .HasForeignKey("ProsisMTTO.Entities.DTCService", "ComponentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

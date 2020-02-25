@@ -17,7 +17,14 @@ namespace ProsisMTTO.Entities
         public int LaneType { get; set; }
         public string SquaresCatalogId { get; set; }
 
-        public DTCTechnical DTCTechnical { get; set; }
+        public virtual ICollection<DTCTechnical> DTCTechnical { get; set; }
         public TypeCarril TypeCarril { get; set; }
+               
+
+
+
+
+
+
     }
 }

@@ -27,6 +27,8 @@ namespace ProsisMTTO.Context
             public DbSet<ServiceType> ServiceTypes { get; set; }
             public DbSet<DTCService> DTCServices { get; set; }
             public DbSet<Component> Components { get; set; }
+            public DbSet<AdminSquare> AdminSquares{ get; set; }
+            public DbSet<ReplacementCatalog> ReplacementCatalogs{ get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -75,6 +77,9 @@ namespace ProsisMTTO.Context
 
             });
 
+
+
+
             modelBuilder.Entity<Component>(db =>
             {
                 db.Property<string>("ComponentName")
@@ -92,17 +97,29 @@ namespace ProsisMTTO.Context
                     .HasColumnType("nvarchar(25)")
                     .HasMaxLength(25);
 
+                db.Property<string>("Model")
+                    .HasColumnType("nvarchar(25)")
+                    .HasColumnName("Model")
+                    .HasMaxLength(25);
+
                 db.Property<string>("Description")
                     .HasColumnType("nvarchar(300)")
                     .HasMaxLength(300);
             });
 
+
             modelBuilder.Entity<DTCInventory>(db =>
             {
                 db.HasKey("DTCTechnicalId", "InventoryId");
 
-                db.Property<DateTime>("DateRecord")
+                db.Property<DateTime>("DateRecordRequest")
                         .HasColumnType("datetime2");
+
+                db.Property<string>("Location")
+                   .HasColumnType("nvarchar(5)")
+                   .HasMaxLength(5);
+
+
 
             });
 
@@ -114,6 +131,49 @@ namespace ProsisMTTO.Context
                         .HasColumnType("datetime2");
 
             });
+
+
+            modelBuilder.Entity<AdminSquare>(db =>
+            {
+     
+                db.HasKey("AdminId");
+
+                db.Property<string>("NumCapufe")
+                    .HasColumnType("nvarchar(30)")
+                    .HasMaxLength(30);
+
+                db.Property<string>("NumGea")
+                .HasColumnType("nvarchar(30)")
+                .HasMaxLength(30);
+
+                db.Property<string>("NomOperador")
+                .HasColumnType("nvarchar(60)")
+                .HasMaxLength(60);
+                
+            });
+
+
+            modelBuilder.Entity<ReplacementCatalog>(db =>
+            {
+
+                db.HasKey("ReplacementCatalogId");
+               
+
+                db.Property<string>("Model")
+                .HasColumnType("nvarchar(30)")
+                .HasMaxLength(30);
+
+                //db.HasOne("ProsisMTTO.Entities.Component", null)
+                //       .WithMany("ReplacementCatalog")
+                //       .HasForeignKey( "ComponentId")
+                //       .OnDelete(DeleteBehavior.Cascade)
+                //       .IsRequired();
+
+              
+
+            });
+
+
 
             modelBuilder.Entity<User>(db =>
                 {
@@ -222,11 +282,11 @@ namespace ProsisMTTO.Context
 
                     db.HasKey("CapufeLaneNum", "IdGare")
                         .HasName("PrimaryKey_CapufeLaneNum");
-
-                    db.HasIndex("SquaresCatalogId");
+                
 
                     db.ToTable("LanesCatalogs");
                 });
+
 
             modelBuilder.Entity<DTCTechnical>(db =>
             {
@@ -256,8 +316,8 @@ namespace ProsisMTTO.Context
                 db.Property<DateTime>("FailureDate")
                     .HasColumnType("datetime2");
 
-                db.Property<int>("FailureNum")
-                    .HasColumnType("int");
+                //db.Property<int>("FailureNum")
+                //    .HasColumnType("int");
 
                 db.Property<string>("Image")
                     .HasColumnType("nvarchar(500)")
@@ -266,14 +326,14 @@ namespace ProsisMTTO.Context
                 db.Property<DateTime>("IncidentDate")
                     .HasColumnType("datetime2");
 
-                db.Property<string>("LanesCatalogId")
-                    .IsRequired()
-                    .HasColumnType("nvarchar(20)");
+                //db.Property<string>("LanesCatalogId")
+                //    .IsRequired()
+                //    .HasColumnType("nvarchar(20)");
 
-                db.Property<string>("IdGare")
-                    .IsRequired()
-                    .HasColumnType("nvarchar(3)")
-                    .HasMaxLength(3);
+                //db.Property<string>("IdGare")
+                //    .IsRequired()
+                //    .HasColumnType("nvarchar(3)")
+                //    .HasMaxLength(3);
 
                 db.Property<string>("Observation")
                     .HasColumnType("nvarchar(300)")
@@ -290,19 +350,12 @@ namespace ProsisMTTO.Context
                     .HasColumnType("nvarchar(30)")
                     .HasMaxLength(30);
 
-                db.Property<int>("UserId")
-                    .HasColumnType("int");
+                //db.Property<int>("UserId")
+                //    .HasColumnType("int");
 
                 db.HasKey("ReferenceNum")
                     .HasName("PrimaryKey_ReferenceNum");
-
-                db.HasIndex("DTCHeaderId")
-                    .IsUnique();
-
-                db.HasIndex("LanesCatalogId")
-                    .IsUnique();
-
-                db.HasIndex("UserId");
+                
 
                 db.HasOne("ProsisMTTO.Entities.DTCHeader", null)
                         .WithOne("DTCTechnical")
@@ -310,11 +363,12 @@ namespace ProsisMTTO.Context
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                db.HasOne("ProsisMTTO.Entities.LanesCatalog", null)
-                    .WithOne("DTCTechnical")
-                    .HasForeignKey("ProsisMTTO.Entities.DTCTechnical", "LanesCatalogId", "IdGare")
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .IsRequired();
+                //db.HasOne("ProsisMTTO.Entities.LanesCatalog", null)
+                //    .WithMany("DTCTechnical")
+                //    .HasForeignKey("ProsisMTTO.Entities.DTCTechnical", "LanesCatalogId", "IdGare")
+                //    .OnDelete(DeleteBehavior.Cascade)
+                //    .IsRequired();
+
 
                 db.HasOne("ProsisMTTO.Entities.User", null)
                     .WithMany("DTCTechnical")
@@ -324,6 +378,7 @@ namespace ProsisMTTO.Context
 
                 db.ToTable("DTCTechnical");
             });
+
 
             modelBuilder.Entity<DTCMovement>(db =>
                 {
@@ -354,6 +409,7 @@ namespace ProsisMTTO.Context
                     db.ToTable("DTCMovements");
                 });
 
+
                 modelBuilder.Entity<DTCHeader>(db =>
                 {
                     db.Property<string>("DTCHeaderId")
@@ -377,6 +433,10 @@ namespace ProsisMTTO.Context
                         .HasName("PrimaryKey_DTCHeaderId");
 
                     db.ToTable("DTCHeaders");
+
+                    db.Property<string>("Mail")
+                    .HasColumnType("nvarchar(35)")
+                    .HasMaxLength(35);
                 });
             }
         }

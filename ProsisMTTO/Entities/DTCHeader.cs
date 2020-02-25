@@ -14,7 +14,8 @@ namespace ProsisMTTO.Entities
         public int AgreementNum { get; set; }
         public string ManagerName { get; set; }
         public string Position { get; set; }
+        public string Mail { get; set; }
 
-        public DTCTechnical DTCTechnical { get; set; }
+        public ICollection<DTCTechnical> DTCTechnical { get; set; }
     }
 }

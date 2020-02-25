@@ -18,8 +18,14 @@ namespace ProsisMTTO.Entities
         public string Description { get; set; }
 
         public ICollection<Inventory> Inventories { get; set; }
-        public DTCService DTCService { get; set; }
+        public ICollection<DTCService> DTCServices { get; set; }
         public int UnitId { get; set; }
         public int ServiceTypeId { get; set; }
+        public string Model { get; set; }
+        public Boolean AutomaticSignature { get; set; }
+
+
+        public virtual ICollection<ReplacementCatalog> Replacements { get; set; }
+
     }
 }

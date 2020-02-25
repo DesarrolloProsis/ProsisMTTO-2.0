@@ -15,5 +15,8 @@ namespace ProsisMTTO.Entities
         public string Delegation { get; set; }
 
         public ICollection<LanesCatalog> LanesCatalogs { get; set; }
+        public ICollection<AdminSquare> AdminSquares{ get; set; }
+
+
     }
 }

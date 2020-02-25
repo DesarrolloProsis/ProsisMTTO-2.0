@@ -12,8 +12,8 @@ namespace ProsisMTTO.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public string ReferenceNum { get; set; }
         public ICollection<DTCMovement> DTCMovements { get; set; }
-        public string LanesCatalogId { get; set; }
-        public string IdGare { get; set; }
+        //public string LanesCatalogId { get; set; }
+        //public string IdGare { get; set; }
         public int UserId { get; set; }
         public string DTCHeaderId { get; set; }
         public ICollection<DTCInventory> DTCInventories { get; set; }
@@ -31,5 +31,8 @@ namespace ProsisMTTO.Entities
         public string Diagnostic { get; set; }
         public string Observation { get; set; }
         public string Image { get; set; }
+
+        public virtual LanesCatalog LanesCatalog { get; set; }
+
     }
 }
