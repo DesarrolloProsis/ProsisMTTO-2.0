@@ -25,7 +25,9 @@ namespace ProsisMTTO.Entities
         public Boolean AutomaticSignature { get; set; }
 
 
+
         public virtual ICollection<ReplacementCatalog> Replacements { get; set; }
+       
 
     }
 }

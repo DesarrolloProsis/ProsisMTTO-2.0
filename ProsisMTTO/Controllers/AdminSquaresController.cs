@@ -14,48 +14,48 @@ namespace ProsisMTTO.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [EnableCors("AllowAPIRequest")]
-    public class DTCInventoriesController : ControllerBase
+    public class AdminSquaresController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
 
-        public DTCInventoriesController(ApplicationDbContext context)
+        public AdminSquaresController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/DTCInventories
+        // GET: api/AdminSquares
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<DTCInventory>>> GetDTCInventories()
+        public async Task<ActionResult<IEnumerable<AdminSquare>>> GetAdminSquares()
         {
-            return await _context.DTCInventories.ToListAsync();
+            return await _context.AdminSquares.ToListAsync();
         }
 
-        // GET: api/DTCInventories/5
+        // GET: api/AdminSquares/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<DTCInventory>> GetDTCInventory(string id)
+        public async Task<ActionResult<AdminSquare>> GetAdminSquare(string id)
         {
-            var dTCInventory = await _context.DTCInventories.FindAsync(id);
+            var adminSquare = await _context.AdminSquares.FindAsync(id);
 
-            if (dTCInventory == null)
+            if (adminSquare == null)
             {
                 return NotFound();
             }
 
-            return dTCInventory;
+            return adminSquare;
         }
 
-        // PUT: api/DTCInventories/5
+        // PUT: api/AdminSquares/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutDTCInventory(string id, DTCInventory dTCInventory)
+        public async Task<IActionResult> PutAdminSquare(string id, AdminSquare adminSquare)
         {
-            if (id != dTCInventory.DTCTechnicalId)
+            if (id != adminSquare.AdminId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(dTCInventory).State = EntityState.Modified;
+            _context.Entry(adminSquare).State = EntityState.Modified;
 
             try
             {
@@ -63,7 +63,7 @@ namespace ProsisMTTO.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!DTCInventoryExists(id))
+                if (!AdminSquareExists(id))
                 {
                     return NotFound();
                 }
@@ -76,20 +76,20 @@ namespace ProsisMTTO.Controllers
             return NoContent();
         }
 
-        // POST: api/DTCInventories
+        // POST: api/AdminSquares
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
-        public async Task<ActionResult<DTCInventory>> PostDTCInventory(DTCInventory dTCInventory)
+        public async Task<ActionResult<AdminSquare>> PostAdminSquare(AdminSquare adminSquare)
         {
-            _context.DTCInventories.Add(dTCInventory);
+            _context.AdminSquares.Add(adminSquare);
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException)
             {
-                if (DTCInventoryExists(dTCInventory.DTCTechnicalId))
+                if (AdminSquareExists(adminSquare.AdminId))
                 {
                     return Conflict();
                 }
@@ -99,28 +99,28 @@ namespace ProsisMTTO.Controllers
                 }
             }
 
-            return CreatedAtAction("GetDTCInventory", new { id = dTCInventory.DTCTechnicalId }, dTCInventory);
+            return CreatedAtAction("GetAdminSquare", new { id = adminSquare.AdminId }, adminSquare);
         }
 
-        // DELETE: api/DTCInventories/5
+        // DELETE: api/AdminSquares/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<DTCInventory>> DeleteDTCInventory(string id)
+        public async Task<ActionResult<AdminSquare>> DeleteAdminSquare(string id)
         {
-            var dTCInventory = await _context.DTCInventories.FindAsync(id);
-            if (dTCInventory == null)
+            var adminSquare = await _context.AdminSquares.FindAsync(id);
+            if (adminSquare == null)
             {
                 return NotFound();
             }
 
-            _context.DTCInventories.Remove(dTCInventory);
+            _context.AdminSquares.Remove(adminSquare);
             await _context.SaveChangesAsync();
 
-            return dTCInventory;
+            return adminSquare;
         }
 
-        private bool DTCInventoryExists(string id)
+        private bool AdminSquareExists(string id)
         {
-            return _context.DTCInventories.Any(e => e.DTCTechnicalId == id);
+            return _context.AdminSquares.Any(e => e.AdminId == id);
         }
     }
 }

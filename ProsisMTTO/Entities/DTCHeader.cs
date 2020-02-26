@@ -17,5 +17,7 @@ namespace ProsisMTTO.Entities
         public string Mail { get; set; }
 
         public ICollection<DTCTechnical> DTCTechnical { get; set; }
+        public virtual ICollection<Component> Components{ get; set; }
+
     }
 }

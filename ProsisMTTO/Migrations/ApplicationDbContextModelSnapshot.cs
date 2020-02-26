@@ -64,6 +64,9 @@ namespace ProsisMTTO.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
+                    b.Property<string>("DTCHeaderId")
+                        .HasColumnType("nvarchar(20)");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(300)")
                         .HasMaxLength(300);
@@ -87,6 +90,8 @@ namespace ProsisMTTO.Migrations
                         .HasMaxLength(4);
 
                     b.HasKey("ComponentId");
+
+                    b.HasIndex("DTCHeaderId");
 
                     b.HasIndex("ServiceTypeId");
 
@@ -518,6 +523,10 @@ namespace ProsisMTTO.Migrations
 
             modelBuilder.Entity("ProsisMTTO.Entities.Component", b =>
                 {
+                    b.HasOne("ProsisMTTO.Entities.DTCHeader", null)
+                        .WithMany("Components")
+                        .HasForeignKey("DTCHeaderId");
+
                     b.HasOne("ProsisMTTO.Entities.ServiceType", null)
                         .WithMany("Components")
                         .HasForeignKey("ServiceTypeId")

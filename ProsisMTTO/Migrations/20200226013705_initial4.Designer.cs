@@ -10,8 +10,8 @@ using ProsisMTTO.Context;
 namespace ProsisMTTO.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200225003752_Mitra2")]
-    partial class Mitra2
+    [Migration("20200226013705_initial4")]
+    partial class initial4
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -55,6 +55,9 @@ namespace ProsisMTTO.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<bool>("AutomaticSignature")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Brand")
                         .HasColumnType("nvarchar(25)")
                         .HasMaxLength(25);
@@ -63,9 +66,17 @@ namespace ProsisMTTO.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
+                    b.Property<string>("DTCHeaderId")
+                        .HasColumnType("nvarchar(20)");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(300)")
                         .HasMaxLength(300);
+
+                    b.Property<string>("Model")
+                        .HasColumnName("Model")
+                        .HasColumnType("nvarchar(25)")
+                        .HasMaxLength(25);
 
                     b.Property<float>("Price")
                         .HasColumnType("real");
@@ -81,6 +92,8 @@ namespace ProsisMTTO.Migrations
                         .HasMaxLength(4);
 
                     b.HasKey("ComponentId");
+
+                    b.HasIndex("DTCHeaderId");
 
                     b.HasIndex("ServiceTypeId");
 
@@ -126,8 +139,15 @@ namespace ProsisMTTO.Migrations
                     b.Property<int>("InventoryId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("DateRecord")
+                    b.Property<bool>("Authorization")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("DateRecordRequest")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Location")
+                        .HasColumnType("nvarchar(5)")
+                        .HasMaxLength(5);
 
                     b.HasKey("DTCTechnicalId", "InventoryId");
 
@@ -175,8 +195,7 @@ namespace ProsisMTTO.Migrations
 
                     b.HasKey("DTCTechnicalId", "ComponentId");
 
-                    b.HasIndex("ComponentId")
-                        .IsUnique();
+                    b.HasIndex("ComponentId");
 
                     b.ToTable("DTCServices");
                 });
@@ -212,11 +231,6 @@ namespace ProsisMTTO.Migrations
                     b.Property<int>("FailureNum")
                         .HasColumnType("int");
 
-                    b.Property<string>("IdGare")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(3)")
-                        .HasMaxLength(3);
-
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(500)")
                         .HasMaxLength(500);
@@ -224,9 +238,11 @@ namespace ProsisMTTO.Migrations
                     b.Property<DateTime>("IncidentDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("LanesCatalogId")
-                        .IsRequired()
+                    b.Property<string>("LanesCatalogCapufeLaneNum")
                         .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("LanesCatalogIdGare")
+                        .HasColumnType("nvarchar(3)");
 
                     b.Property<string>("Observation")
                         .HasColumnType("nvarchar(300)")
@@ -249,15 +265,11 @@ namespace ProsisMTTO.Migrations
                     b.HasKey("ReferenceNum")
                         .HasName("PrimaryKey_ReferenceNum");
 
-                    b.HasIndex("DTCHeaderId")
-                        .IsUnique();
-
-                    b.HasIndex("LanesCatalogId")
-                        .IsUnique();
+                    b.HasIndex("DTCHeaderId");
 
                     b.HasIndex("UserId");
 
-                    b.HasIndex("LanesCatalogId", "IdGare");
+                    b.HasIndex("LanesCatalogCapufeLaneNum", "LanesCatalogIdGare");
 
                     b.ToTable("DTCTechnical");
                 });
@@ -341,6 +353,27 @@ namespace ProsisMTTO.Migrations
                     b.HasIndex("TypeCarrilId");
 
                     b.ToTable("LanesCatalogs");
+                });
+
+            modelBuilder.Entity("ProsisMTTO.Entities.ReplacementCatalog", b =>
+                {
+                    b.Property<int>("ReplacementCatalogId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("ComponentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Model")
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
+
+                    b.HasKey("ReplacementCatalogId");
+
+                    b.HasIndex("ComponentId");
+
+                    b.ToTable("ReplacementCatalogs");
                 });
 
             modelBuilder.Entity("ProsisMTTO.Entities.ServiceType", b =>
@@ -492,6 +525,10 @@ namespace ProsisMTTO.Migrations
 
             modelBuilder.Entity("ProsisMTTO.Entities.Component", b =>
                 {
+                    b.HasOne("ProsisMTTO.Entities.DTCHeader", null)
+                        .WithMany("Components")
+                        .HasForeignKey("DTCHeaderId");
+
                     b.HasOne("ProsisMTTO.Entities.ServiceType", null)
                         .WithMany("Components")
                         .HasForeignKey("ServiceTypeId")
@@ -530,8 +567,8 @@ namespace ProsisMTTO.Migrations
             modelBuilder.Entity("ProsisMTTO.Entities.DTCService", b =>
                 {
                     b.HasOne("ProsisMTTO.Entities.Component", null)
-                        .WithOne("DTCService")
-                        .HasForeignKey("ProsisMTTO.Entities.DTCService", "ComponentId")
+                        .WithMany("DTCServices")
+                        .HasForeignKey("ComponentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -545,8 +582,8 @@ namespace ProsisMTTO.Migrations
             modelBuilder.Entity("ProsisMTTO.Entities.DTCTechnical", b =>
                 {
                     b.HasOne("ProsisMTTO.Entities.DTCHeader", null)
-                        .WithOne("DTCTechnical")
-                        .HasForeignKey("ProsisMTTO.Entities.DTCTechnical", "DTCHeaderId")
+                        .WithMany("DTCTechnical")
+                        .HasForeignKey("DTCHeaderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -556,11 +593,9 @@ namespace ProsisMTTO.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ProsisMTTO.Entities.LanesCatalog", null)
+                    b.HasOne("ProsisMTTO.Entities.LanesCatalog", "LanesCatalog")
                         .WithMany("DTCTechnical")
-                        .HasForeignKey("LanesCatalogId", "IdGare")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("LanesCatalogCapufeLaneNum", "LanesCatalogIdGare");
                 });
 
             modelBuilder.Entity("ProsisMTTO.Entities.Inventory", b =>
@@ -583,6 +618,13 @@ namespace ProsisMTTO.Migrations
                     b.HasOne("ProsisMTTO.Entities.TypeCarril", "TypeCarril")
                         .WithMany("LanesCatalogs")
                         .HasForeignKey("TypeCarrilId");
+                });
+
+            modelBuilder.Entity("ProsisMTTO.Entities.ReplacementCatalog", b =>
+                {
+                    b.HasOne("ProsisMTTO.Entities.Component", "component")
+                        .WithMany("Replacements")
+                        .HasForeignKey("ComponentId");
                 });
 #pragma warning restore 612, 618
         }
