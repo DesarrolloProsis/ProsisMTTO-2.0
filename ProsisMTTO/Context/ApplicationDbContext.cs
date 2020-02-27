@@ -430,7 +430,7 @@ namespace ProsisMTTO.Context
                         .HasMaxLength(20);
 
                     db.HasKey("DTCHeaderId")
-                        .HasName("PrimaryKey_DTCHeaderId");
+                        .HasName("PrimaryKey_AgreementNum");
 
                     db.ToTable("DTCHeaders");
 
