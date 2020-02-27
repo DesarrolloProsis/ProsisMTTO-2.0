@@ -12,11 +12,11 @@ namespace ProsisMTTO.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public string DTCHeaderId { get; set; }
         public int AgreementNum { get; set; }
-        //[StringLength(40, MinimumLength = 10, ErrorMessage = "El campo {0} tiene un minimo de {2} y un maximo de {1} caracteres")]
+        [StringLength(40, MinimumLength = 10, ErrorMessage = "El campo {0} tiene un minimo de {2} y un maximo de {1} caracteres")]
         public string ManagerName { get; set; }
-        //[StringLength(80, MinimumLength = 10, ErrorMessage = "El campo {0} tiene un minimo de {2} y un maximo de {1} caracteres")]
+        [StringLength(80, MinimumLength = 10, ErrorMessage = "El campo {0} tiene un minimo de {2} y un maximo de {1} caracteres")]
         public string Position { get; set; }
-        //[EmailAddress]
+        [EmailAddress]
         public string Mail { get; set; }
 
         public ICollection<DTCTechnical> DTCTechnical { get; set; }
